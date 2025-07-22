@@ -1,0 +1,13 @@
+{
+  "name": "@mini-orpc/server",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "type:check": "tsc -b"
+  },
+  "dependencies": {
+    "@mini-orpc/client": "workspace:*"
+  }
+}

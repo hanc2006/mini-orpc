@@ -1,0 +1,21 @@
+{
+  "name": "@mini-orpc/repo",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "type:check": "bun run --filter=* type:check",
+    "format": "ultracite format"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "@types/bun": "latest",
+    "ultracite": "5.0.47"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "packageManager": "bun@1.2.19"
+}
