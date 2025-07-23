@@ -1,16 +1,17 @@
-import type { AnyProcedure, Procedure } from './procedure';
+import type { Procedure } from './procedure';
+import type { Context } from './types';
 
-export type Router = AnyProcedure | { [k: string]: Router };
+export type Router<T extends Context> =
+  | Procedure<T, any, any, any>
+  | { [k: string]: Router<T> };
 
-export type InferRouterInitialContexts<T extends Router> = T extends Procedure<
-  infer UInitialContext,
-  any,
-  any,
-  any
->
-  ? UInitialContext
-  : {
-      [K in keyof T]: T[K] extends Router
-        ? InferRouterInitialContexts<T[K]>
-        : never;
-    };
+export type AnyRouter = Router<any>;
+
+export type InferRouterInitialContexts<T extends AnyRouter> =
+  T extends Procedure<infer UInitialContext, any, any, any>
+    ? UInitialContext
+    : {
+        [K in keyof T]: T[K] extends AnyRouter
+          ? InferRouterInitialContexts<T[K]>
+          : never;
+      };

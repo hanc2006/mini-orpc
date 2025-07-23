@@ -1,3 +1,4 @@
+export { ORPCError } from '@mini-orpc/client';
 export * from './builder';
 export * from './error';
 export * from './middleware';

@@ -1,9 +1,9 @@
-import type { Client } from '@mini-orpc/client';
+import { type Client, ORPCError } from '@mini-orpc/client';
 import {
   type MaybeOptionalOptions,
   resolveMaybeOptionalOptions,
 } from '@orpc/shared';
-import { ORPCError, ValidationError } from './error';
+import { ValidationError } from './error';
 import type {
   AnyProcedure,
   Procedure,

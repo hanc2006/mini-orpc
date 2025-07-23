@@ -7,10 +7,12 @@
         "noExplicitAny": "off"
       },
       "style": {
-        "useShorthandFunctionType": "off"
+        "useShorthandFunctionType": "off",
+        "useTemplate": "off"
       },
       "performance": {
-        "noNamespaceImport": "off"
+        "noNamespaceImport": "off",
+        "useTopLevelRegex": "off"
       }
     }
   }

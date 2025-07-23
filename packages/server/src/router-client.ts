@@ -10,9 +10,9 @@ import {
   createProcedureClient,
   type ProcedureClient,
 } from './procedure-client';
-import type { InferRouterInitialContexts, Router } from './router';
+import type { AnyRouter, InferRouterInitialContexts } from './router';
 
-export type RouterClient<TRouter extends Router> = TRouter extends Procedure<
+export type RouterClient<TRouter extends AnyRouter> = TRouter extends Procedure<
   any,
   any,
   infer UInputSchema,
@@ -20,13 +20,13 @@ export type RouterClient<TRouter extends Router> = TRouter extends Procedure<
 >
   ? ProcedureClient<UInputSchema, UOutputSchema>
   : {
-      [K in keyof TRouter]: TRouter[K] extends Router
+      [K in keyof TRouter]: TRouter[K] extends AnyRouter
         ? RouterClient<TRouter[K]>
         : never;
     };
 
-export function createRouterClient<T extends Router>(
-  router: Router,
+export function createRouterClient<T extends AnyRouter>(
+  router: T,
   ...rest: MaybeOptionalOptions<
     CreateProcedureClientOptions<InferRouterInitialContexts<T>>
   >
@@ -45,7 +45,7 @@ export function createRouterClient<T extends Router>(
         return Reflect.get(target, key);
       }
 
-      const next = get(router, [key]) as Router | undefined;
+      const next = get(router, [key]) as AnyRouter | undefined;
 
       if (!next) {
         return Reflect.get(target, key);
@@ -58,5 +58,5 @@ export function createRouterClient<T extends Router>(
     },
   });
 
-  return recursive as RouterClient<T>;
+  return recursive as unknown as RouterClient<T>;
 }

@@ -2,7 +2,8 @@
   "name": "@mini-orpc/server",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./fetch": "./src/fetch/index.ts"
   },
   "scripts": {
     "type:check": "tsc -b"
