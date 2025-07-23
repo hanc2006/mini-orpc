@@ -4,11 +4,6 @@ import {
   resolveMaybeOptionalOptions,
 } from '@orpc/shared';
 
-export type ORPCErrorJSON<TCode extends string, TData> = Pick<
-  ORPCError<TCode, TData>,
-  'code' | 'status' | 'message' | 'data'
->;
-
 export type ORPCErrorOptions<TData> = ErrorOptions & {
   status?: number;
   message?: string;
@@ -45,6 +40,11 @@ export class ORPCError<TCode extends string, TData> extends Error {
     };
   }
 }
+
+export type ORPCErrorJSON<TCode extends string, TData> = Pick<
+  ORPCError<TCode, TData>,
+  'code' | 'status' | 'message' | 'data'
+>;
 
 export function isORPCErrorStatus(status: number): boolean {
   return status < 200 || status >= 400;

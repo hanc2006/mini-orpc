@@ -38,7 +38,8 @@ export class JSONLink {
 
     if (!response.ok) {
       throw new Error(
-        `[ORPC] Request failed with status ${response.status}: ${response.statusText}`
+        `[ORPC] Request failed with status ${response.status}: ${response.statusText}`,
+        { cause: response }
       );
     }
 

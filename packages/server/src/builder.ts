@@ -149,7 +149,7 @@ export class Builder<
     TInitialContext,
     TCurrentContext,
     TInputSchema,
-    TOutputSchema extends { initial: true } // infer handler output if output is not defined
+    TOutputSchema extends { initial?: true } // infer handler output if output is not defined
       ? Schema<UFuncOutput>
       : TOutputSchema
   > {
@@ -164,7 +164,7 @@ export const os = new Builder<
   Record<never, never>,
   Record<never, never>,
   Schema<unknown, unknown>,
-  Schema<unknown, unknown> & { initial: true }
+  Schema<unknown, unknown> & { initial?: true }
 >({
   middlewares: [],
 });
