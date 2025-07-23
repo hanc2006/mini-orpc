@@ -3,9 +3,11 @@
   "type": "module",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "playground"
   ],
   "scripts": {
+    "dev": "bun run --filter=playground dev",
     "type:check": "bun run --filter=* type:check",
     "format": "ultracite format"
   },

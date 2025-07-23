@@ -4,11 +4,14 @@
   "linter": {
     "rules": {
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noConsole": "off",
+        "noAssignInExpressions": "off"
       },
       "style": {
         "useShorthandFunctionType": "off",
-        "useTemplate": "off"
+        "useTemplate": "off",
+        "noNonNullAssertion": "off"
       },
       "performance": {
         "noNamespaceImport": "off",

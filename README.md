@@ -6,6 +6,17 @@ Mini oRPC is a simplified implementation of [oRPC](https://orpc.unnoq.com) that 
 
 To get started with Mini oRPC, review this repository alongside the [Mini oRPC documentation](https://orpc.unnoq.com/learn-and-contribute/mini-orpc/overview). The documentation provides a comprehensive guide for building mini oRPC from scratch, with examples and key concept explanations.
 
+## Playground
+
+The playground directory contains a minimal React + Bun setup for testing and experimenting with Mini oRPC. To run the playground:
+
+```bash
+cd playground
+bun dev
+```
+
+This will start the development server and you can begin exploring Mini oRPC features in a live environment.
+
 ## Sponsors
 
 <p align="center">
