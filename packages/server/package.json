@@ -8,6 +8,11 @@
     "type:check": "tsc -b"
   },
   "dependencies": {
-    "@mini-orpc/client": "workspace:*"
+    "@mini-orpc/client": "workspace:*",
+    "@orpc/shared": "^1.7.4",
+    "@standard-schema/spec": "^1.0.0"
+  },
+  "devDependencies": {
+    "zod": "^4.0.5"
   }
 }
