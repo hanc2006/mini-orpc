@@ -6,7 +6,8 @@
       "suspicious": {
         "noExplicitAny": "off",
         "noConsole": "off",
-        "noAssignInExpressions": "off"
+        "noAssignInExpressions": "off",
+        "useAwait": "off"
       },
       "style": {
         "useShorthandFunctionType": "off",
@@ -16,6 +17,10 @@
       "performance": {
         "noNamespaceImport": "off",
         "useTopLevelRegex": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": "off",
+        "noUnusedFunctionParameters": "off"
       }
     }
   }
