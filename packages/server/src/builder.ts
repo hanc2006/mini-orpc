@@ -51,9 +51,7 @@ export class Builder<
   }
 
   /**
-   * Set or override the initial context.
-   *
-   * @see {@link https://orpc.unnoq.com/docs/context Context Docs}
+   * Override initial context.
    */
   $context<U extends Context>(): Builder<
     U & Record<never, never>,
@@ -73,33 +71,39 @@ export class Builder<
 
   /**
    * Creates a middleware.
-   *
-   * @see {@link https://orpc.unnoq.com/docs/middleware Middleware Docs}
    */
   middleware<UOutContext extends IntersectPick<TCurrentContext, UOutContext>>(
     middleware: Middleware<TInitialContext, UOutContext>
   ): Middleware<TInitialContext, UOutContext> {
+    /**
+     * `extends IntersectPick<TCurrentContext, UOutContext>`
+     *  Ensures that the UOutContext is not conflicting with the current context.
+     */
+
     return middleware;
   }
 
   /**
    * Uses a middleware to modify the context or improve the pipeline.
-   *
-   * @info Supports both normal middleware and inline middleware implementations.
-   * @note The current context must be satisfy middleware dependent-context
-   * @see {@link https://orpc.unnoq.com/docs/middleware Middleware Docs}
    */
-  use<
-    UOutContext extends IntersectPick<TCurrentContext, UOutContext>,
-    UInContext extends Context = TCurrentContext,
-  >(
-    middleware: Middleware<UInContext | TCurrentContext, UOutContext>
+  use<UOutContext extends IntersectPick<TCurrentContext, UOutContext>>(
+    middleware: Middleware<TCurrentContext, UOutContext>
   ): Builder<
     TInitialContext,
     Omit<TCurrentContext, keyof UOutContext> & UOutContext,
     TInputSchema,
     TOutputSchema
   > {
+    /**
+     * `extends IntersectPick<TCurrentContext, UOutContext>`
+     *  Ensures that the UOutContext is not conflicting with the current context.
+     */
+
+    /**
+     * `Omit<TCurrentContext, keyof UOutContext> & UOutContext`
+     * UOutContext will merge with the current context.
+     */
+
     return new Builder({
       ...this['~orpc'],
       middlewares: [...this['~orpc'].middlewares, middleware],
@@ -108,8 +112,6 @@ export class Builder<
 
   /**
    * Defines the input validation schema.
-   *
-   * @see {@link https://orpc.unnoq.com/docs/procedure#input-output-validation Input Validation Docs}
    */
   input<USchema extends AnySchema>(
     schema: USchema
@@ -122,8 +124,6 @@ export class Builder<
 
   /**
    * Defines the output validation schema.
-   *
-   * @see {@link https://orpc.unnoq.com/docs/procedure#input-output-validation Output Validation Docs}
    */
   output<USchema extends AnySchema>(
     schema: USchema
@@ -136,8 +136,6 @@ export class Builder<
 
   /**
    * Defines the handler of the procedure.
-   *
-   * @see {@link https://orpc.unnoq.com/docs/procedure Procedure Docs}
    */
   handler<UFuncOutput extends InferSchemaInput<TOutputSchema>>(
     handler: ProcedureHandler<
@@ -149,10 +147,16 @@ export class Builder<
     TInitialContext,
     TCurrentContext,
     TInputSchema,
-    TOutputSchema extends { initial?: true } // infer handler output if output is not defined
+    TOutputSchema extends { initial?: true }
       ? Schema<UFuncOutput>
       : TOutputSchema
   > {
+    /**
+     * `TOutputSchema extends { initial?: true }`
+     * Means that the output schema is not defined yet,
+     * so we can use the handler output as the output schema.
+     */
+
     return new Procedure({
       ...this['~orpc'],
       handler,
@@ -164,7 +168,7 @@ export const os = new Builder<
   Record<never, never>,
   Record<never, never>,
   Schema<unknown, unknown>,
-  Schema<unknown, unknown> & { initial?: true }
+  Schema<unknown, unknown> & { initial?: true } // indicate that this is the initial schema
 >({
   middlewares: [],
 });

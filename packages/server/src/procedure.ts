@@ -28,6 +28,12 @@ export interface ProcedureDef<
   TInputSchema extends AnySchema,
   TOutputSchema extends AnySchema,
 > {
+  /**
+   * This property must be optional, because it only available in the type system.
+   *
+   * Why `(type: TInitialContext) => unknown` instead of `TInitialContext`?
+   * You can read detail about this topic [here](https://www.typescriptlang.org/docs/handbook/2/generics.html#variance-annotations)
+   */
   __initialContext?: (type: TInitialContext) => unknown;
   middlewares: readonly AnyMiddleware[];
   inputSchema?: TInputSchema;
@@ -41,9 +47,6 @@ export class Procedure<
   TInputSchema extends AnySchema,
   TOutputSchema extends AnySchema,
 > {
-  /**
-   * This property holds the defined options.
-   */
   '~orpc': ProcedureDef<
     TInitialContext,
     TCurrentContext,
@@ -65,6 +68,12 @@ export class Procedure<
 
 export type AnyProcedure = Procedure<any, any, any, any>;
 
+/**
+ * TypeScript only enforces type constraints at compile time.
+ * Checking only `item instanceof Procedure` would fail for objects
+ * that have the same structure as `Procedure` but aren't actual
+ * instances of the `Procedure` class.
+ */
 export function isProcedure(item: unknown): item is AnyProcedure {
   if (item instanceof Procedure) {
     return true;

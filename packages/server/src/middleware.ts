@@ -7,6 +7,11 @@ export type MiddlewareResult<TOutContext extends Context> = Promisable<{
   context: TOutContext;
 }>;
 
+/**
+ * By conditional checking `Record<never, never> extends TOutContext`
+ * users can avoid declaring `context` when TOutContext can be empty.
+ *
+ */
 export type MiddlewareNextFnOptions<TOutContext extends Context> = Record<
   never,
   never

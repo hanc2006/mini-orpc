@@ -21,6 +21,9 @@ export type ProcedureClient<
   TOutputSchema extends AnySchema,
 > = Client<InferSchemaInput<TInputSchema>, InferSchemaOutput<TOutputSchema>>;
 
+/**
+ * context can be optional if `Record<never, never> extends TInitialContext`
+ */
 export type CreateProcedureClientOptions<TInitialContext extends Context> = {
   path?: readonly string[];
 } & (Record<never, never> extends TInitialContext
@@ -31,6 +34,9 @@ export type CreateProcedureClientOptions<TInitialContext extends Context> = {
       context: TInitialContext;
     });
 
+/**
+ * Turn a procedure into a callable function
+ */
 export function createProcedureClient<
   TInitialContext extends Context,
   TInputSchema extends AnySchema,

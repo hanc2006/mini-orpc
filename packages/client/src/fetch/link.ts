@@ -6,7 +6,7 @@ export interface JSONLinkOptions {
   url: string | URL;
 }
 
-export class JSONLink {
+export class RPCLink {
   private readonly url: string | URL;
 
   constructor(options: JSONLinkOptions) {
@@ -30,7 +30,13 @@ export class JSONLink {
       signal: options.signal,
     });
 
-    const body = await parseEmptyableJSON(await response.text()); // body can be empty to represent undefined
+    /**
+     * The request body may be empty, which is interpreted as `undefined` output/error.
+     * Only JSON data is supported for output/error transfer.
+     * For more complex data types, consider using a library like [SuperJSON](https://github.com/flightcontrolhq/superjson).
+     * Note: oRPC uses its own optimized serialization for internal transfers.
+     */
+    const body = await parseEmptyableJSON(await response.text());
 
     if (isORPCErrorStatus(response.status) && isORPCErrorJson(body)) {
       throw new ORPCError(body.code, body);

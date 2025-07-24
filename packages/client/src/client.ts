@@ -1,4 +1,4 @@
-import type { JSONLink } from './fetch';
+import type { RPCLink } from './fetch';
 import type { Client, ClientOptions, NestedClient } from './types';
 
 export interface createORPCClientOptions {
@@ -10,11 +10,9 @@ export interface createORPCClientOptions {
 
 /**
  * Create a oRPC client-side client from a link.
- *
- * @see {@link https://orpc.unnoq.com/docs/client/client-side Client-side Client Docs}
  */
 export function createORPCClient<T extends NestedClient>(
-  link: JSONLink,
+  link: RPCLink,
   options: createORPCClientOptions = {}
 ): T {
   const path = options.path ?? [];

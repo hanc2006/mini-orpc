@@ -14,7 +14,7 @@ export type JSONHandlerHandleResult =
   | { matched: true; response: Response }
   | { matched: false; response?: undefined };
 
-export class JSONHandler<T extends Context> {
+export class RPCHandler<T extends Context> {
   private readonly router: Router<T>;
 
   constructor(router: Router<T>) {
@@ -55,7 +55,13 @@ export class JSONHandler<T extends Context> {
     });
 
     try {
-      const input = parseEmptyableJSON(await request.text()); // body can be empty to represent undefined
+      /**
+       * The request body may be empty, which is interpreted as `undefined` input.
+       * Only JSON data is supported for input transfer.
+       * For more complex data types, consider using a library like [SuperJSON](https://github.com/flightcontrolhq/superjson).
+       * Note: oRPC uses its own optimized serialization for internal transfers.
+       */
+      const input = parseEmptyableJSON(await request.text());
 
       const output = await client(input, {
         signal: request.signal,

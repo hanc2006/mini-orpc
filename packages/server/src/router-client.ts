@@ -25,6 +25,9 @@ export type RouterClient<TRouter extends AnyRouter> = TRouter extends Procedure<
         : never;
     };
 
+/**
+ * Turn a router into a chainable procedure client.
+ */
 export function createRouterClient<T extends AnyRouter>(
   router: T,
   ...rest: MaybeOptionalOptions<

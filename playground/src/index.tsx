@@ -1,9 +1,9 @@
-import { JSONHandler } from '@mini-orpc/server/fetch';
+import { RPCHandler } from '@mini-orpc/server/fetch';
 import { serve } from 'bun';
 import index from './index.html';
 import { router } from './router';
 
-const handler = new JSONHandler(router);
+const handler = new RPCHandler(router);
 
 const server = serve({
   routes: {

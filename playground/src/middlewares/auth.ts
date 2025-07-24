@@ -1,4 +1,4 @@
-import { os } from '@mini-orpc/server';
+import { ORPCError, os } from '@mini-orpc/server';
 import type { User } from '@/schemas/user';
 
 export const requiredAuthMiddleware = os
@@ -12,7 +12,7 @@ export const requiredAuthMiddleware = os
     const session = context.session ?? (await getSession());
 
     if (!session.user) {
-      throw new Error('UNAUTHORIZED');
+      throw new ORPCError('UNAUTHORIZED');
     }
 
     return next({
