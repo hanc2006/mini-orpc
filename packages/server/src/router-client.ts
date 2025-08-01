@@ -3,14 +3,14 @@ import {
   type MaybeOptionalOptions,
   resolveMaybeOptionalOptions,
   toArray,
-} from '@orpc/shared';
-import { isProcedure, type Procedure } from './procedure';
+} from "@orpc/shared";
+import { isProcedure, type Procedure } from "./procedure";
 import {
   type CreateProcedureClientOptions,
   createProcedureClient,
   type ProcedureClient,
-} from './procedure-client';
-import type { AnyRouter, InferRouterInitialContexts } from './router';
+} from "./procedure-client";
+import type { AnyRouter, InferRouterInitialContexts } from "./router";
 
 export type RouterClient<TRouter extends AnyRouter> = TRouter extends Procedure<
   any,
@@ -44,7 +44,7 @@ export function createRouterClient<T extends AnyRouter>(
 
   const recursive = new Proxy(router, {
     get(target, key) {
-      if (typeof key !== 'string') {
+      if (typeof key !== "string") {
         return Reflect.get(target, key);
       }
 

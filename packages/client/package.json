@@ -6,9 +6,15 @@
     "./fetch": "./src/fetch/index.ts"
   },
   "scripts": {
-    "type:check": "tsc -b"
+    "type:check": "tsc -b",
+    "build": "tsc -b"
   },
   "dependencies": {
-    "@orpc/shared": "^1.7.4"
+    "@orpc/shared": "^1.7.5"
+  },
+  "devDependencies": {
+    "@types/node": "latest",
+    "typescript": "^5.8.3",
+    "tsx": "^4.20.3"
   }
 }

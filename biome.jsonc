@@ -9,6 +9,14 @@
         "noAssignInExpressions": "off",
         "useAwait": "off"
       },
+      "complexity": {
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": {
+            "maxAllowedComplexity": 25
+          }
+        }
+      },
       "style": {
         "useShorthandFunctionType": "off",
         "useTemplate": "off",

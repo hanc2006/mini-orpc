@@ -1,9 +1,9 @@
-import { ORPCError } from '@mini-orpc/client';
-import { get, parseEmptyableJSON } from '@orpc/shared';
-import { isProcedure } from '../procedure';
-import { createProcedureClient } from '../procedure-client';
-import type { Router } from '../router';
-import type { Context } from '../types';
+import { ORPCError } from "@mini-orpc/client";
+import { get, parseEmptyableJSON } from "@orpc/shared";
+import { isProcedure } from "../procedure";
+import { createProcedureClient } from "../procedure-client";
+import type { Router } from "../router";
+import type { Context } from "../types";
 
 export interface JSONHandlerHandleOptions<T extends Context> {
   prefix?: `/${string}`;
@@ -36,11 +36,11 @@ export class RPCHandler<T extends Context> {
       return { matched: false, response: undefined };
     }
 
-    const pathname = prefix ? url.pathname.replace(prefix, '') : url.pathname;
+    const pathname = prefix ? url.pathname.replace(prefix, "") : url.pathname;
 
     const path = pathname
-      .replace(/^\/|\/$/g, '')
-      .split('/')
+      .replace(/^\/|\/$/g, "")
+      .split("/")
       .map(decodeURIComponent);
 
     const procedure = get(this.router, path);
@@ -77,15 +77,15 @@ export class RPCHandler<T extends Context> {
       const error =
         e instanceof ORPCError
           ? e
-          : new ORPCError('INTERNAL_ERROR', {
-              message: 'An error occurred while processing the request.',
+          : new ORPCError("INTERNAL_ERROR", {
+              message: "An error occurred while processing the request.",
               cause: e,
             });
 
       const response = new Response(JSON.stringify(error.toJSON()), {
         status: error.status,
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
