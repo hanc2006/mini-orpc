@@ -1,4 +1,4 @@
-import type { SchemaIssue } from './types';
+import type { SchemaIssue } from "./types";
 
 export interface ValidationErrorOptions extends ErrorOptions {
   message: string;

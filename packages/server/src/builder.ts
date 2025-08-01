@@ -1,38 +1,38 @@
-import type { IntersectPick } from '@orpc/shared';
-import type { Middleware } from './middleware';
+import type { IntersectPick } from "@orpc/shared";
+import type { Middleware } from "./middleware";
 import {
   Procedure,
   type ProcedureDef,
   type ProcedureHandler,
-} from './procedure';
+} from "./procedure";
 import type {
   AnySchema,
   Context,
   InferSchemaInput,
   InferSchemaOutput,
   Schema,
-} from './types';
+} from "./types";
 
 export interface BuilderDef<
   TInitialContext extends Context,
   TCurrentContext extends Context,
   TInputSchema extends AnySchema,
-  TOutputSchema extends AnySchema,
+  TOutputSchema extends AnySchema
 > extends Omit<
     ProcedureDef<TInitialContext, TCurrentContext, TInputSchema, TOutputSchema>,
-    'handler'
+    "handler"
   > {}
 
 export class Builder<
   TInitialContext extends Context,
   TCurrentContext extends Context,
   TInputSchema extends AnySchema,
-  TOutputSchema extends AnySchema,
+  TOutputSchema extends AnySchema
 > {
   /**
    * This property holds the defined options.
    */
-  '~orpc': BuilderDef<
+  "~orpc": BuilderDef<
     TInitialContext,
     TCurrentContext,
     TInputSchema,
@@ -47,7 +47,7 @@ export class Builder<
       TOutputSchema
     >
   ) {
-    this['~orpc'] = def;
+    this["~orpc"] = def;
   }
 
   /**
@@ -64,7 +64,7 @@ export class Builder<
      */
 
     return new Builder({
-      ...this['~orpc'],
+      ...this["~orpc"],
       middlewares: [],
     });
   }
@@ -105,8 +105,8 @@ export class Builder<
      */
 
     return new Builder({
-      ...this['~orpc'],
-      middlewares: [...this['~orpc'].middlewares, middleware],
+      ...this["~orpc"],
+      middlewares: [...this["~orpc"].middlewares, middleware],
     });
   }
 
@@ -117,7 +117,7 @@ export class Builder<
     schema: USchema
   ): Builder<TInitialContext, TCurrentContext, USchema, TOutputSchema> {
     return new Builder({
-      ...this['~orpc'],
+      ...this["~orpc"],
       inputSchema: schema,
     });
   }
@@ -129,7 +129,7 @@ export class Builder<
     schema: USchema
   ): Builder<TInitialContext, TCurrentContext, TInputSchema, USchema> {
     return new Builder({
-      ...this['~orpc'],
+      ...this["~orpc"],
       outputSchema: schema,
     });
   }
@@ -158,7 +158,7 @@ export class Builder<
      */
 
     return new Procedure({
-      ...this['~orpc'],
+      ...this["~orpc"],
       handler,
     }) as any;
   }
