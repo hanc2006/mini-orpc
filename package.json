@@ -2,11 +2,8 @@
   "name": "@mini-orpc/repo",
   "type": "module",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "type:check": "pnpm run --filter=* type:check",
+    "type-check": "pnpm run --filter=* type-check",
     "format": "ultracite format"
   },
   "devDependencies": {

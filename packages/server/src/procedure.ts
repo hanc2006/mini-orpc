@@ -1,9 +1,9 @@
-import type { AnyMiddleware } from "./middleware";
-import type { AnySchema, Context } from "./types";
+import type { AnyMiddleware } from './middleware';
+import type { AnySchema, Context } from './types';
 
 export interface ProcedureHandlerOptions<
   TCurrentContext extends Context,
-  TInput
+  TInput,
 > {
   context: TCurrentContext;
   input: TInput;
@@ -15,7 +15,7 @@ export interface ProcedureHandlerOptions<
 export interface ProcedureHandler<
   TCurrentContext extends Context,
   TInput,
-  THandlerOutput
+  THandlerOutput,
 > {
   (
     opt: ProcedureHandlerOptions<TCurrentContext, TInput>
@@ -26,7 +26,7 @@ export interface ProcedureDef<
   TInitialContext extends Context,
   TCurrentContext extends Context,
   TInputSchema extends AnySchema,
-  TOutputSchema extends AnySchema
+  TOutputSchema extends AnySchema,
 > {
   /**
    * This property must be optional, because it only available in the type system.
@@ -45,9 +45,9 @@ export class Procedure<
   TInitialContext extends Context,
   TCurrentContext extends Context,
   TInputSchema extends AnySchema,
-  TOutputSchema extends AnySchema
+  TOutputSchema extends AnySchema,
 > {
-  "~orpc": ProcedureDef<
+  '~orpc': ProcedureDef<
     TInitialContext,
     TCurrentContext,
     TInputSchema,
@@ -62,7 +62,7 @@ export class Procedure<
       TOutputSchema
     >
   ) {
-    this["~orpc"] = def;
+    this['~orpc'] = def;
   }
 }
 
@@ -80,12 +80,12 @@ export function isProcedure(item: unknown): item is AnyProcedure {
   }
 
   return (
-    (typeof item === "object" || typeof item === "function") &&
+    (typeof item === 'object' || typeof item === 'function') &&
     item !== null &&
-    "~orpc" in item &&
-    typeof item["~orpc"] === "object" &&
-    item["~orpc"] !== null &&
-    "middlewares" in item["~orpc"] &&
-    "handler" in item["~orpc"]
+    '~orpc' in item &&
+    typeof item['~orpc'] === 'object' &&
+    item['~orpc'] !== null &&
+    'middlewares' in item['~orpc'] &&
+    'handler' in item['~orpc']
   );
 }

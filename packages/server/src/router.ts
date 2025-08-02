@@ -1,5 +1,5 @@
-import type { Procedure } from "./procedure";
-import type { Context } from "./types";
+import type { Procedure } from './procedure';
+import type { Context } from './types';
 
 /**
  * Router can be either a single procedure or a nested object of routers.

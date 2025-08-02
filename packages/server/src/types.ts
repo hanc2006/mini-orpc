@@ -1,23 +1,13 @@
-import type { StandardSchemaV1 } from '@standard-schema/spec';
+import type { ZodError, ZodType } from 'zod';
 
-export type Schema<I, O = I> = StandardSchemaV1<I, O>;
+export type Schema<I, O = I> = ZodType<O>;
 
-export type AnySchema = Schema<any, any>;
+export type AnySchema = ZodType<any>;
 
-export type SchemaIssue = StandardSchemaV1.Issue;
+export type SchemaIssue = ZodError['issues'][number];
 
-export type InferSchemaInput<T extends AnySchema> = T extends StandardSchemaV1<
-  infer UInput,
-  any
->
-  ? UInput
-  : never;
+export type InferSchemaInput<T extends AnySchema> = T['_input'];
 
-export type InferSchemaOutput<T extends AnySchema> = T extends StandardSchemaV1<
-  any,
-  infer UOutput
->
-  ? UOutput
-  : never;
+export type InferSchemaOutput<T extends AnySchema> = T['_output'];
 
 export type Context = Record<PropertyKey, any>;

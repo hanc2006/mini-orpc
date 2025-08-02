@@ -1,13 +1,13 @@
 # Implementation Plan
 
-- [x] 1. Set up core contract types and interfaces
+- [] 1. Set up core contract types and interfaces
 
   - Create TypeScript interfaces for RouteConfig, StructuredInput, and StatusCodeOutputs
   - Define type inference utilities for structured inputs and status code outputs
   - Implement ParsedRoute interface and route parsing logic
   - _Requirements: 1.1, 2.1, 3.1_
 
-- [x] 2. Implement route parsing and path parameter extraction
+- [] 2. Implement route parsing and path parameter extraction
 
   - Create route parser that extracts parameters from path patterns like '/planets/{id}'
   - Generate regex patterns for route matching
@@ -15,7 +15,7 @@
   - Add unit tests for route parsing functionality
   - _Requirements: 1.2, 1.3_
 
-- [x] 3. Create ContractBuilder class with fluent API
+- [] 3. Create ContractBuilder class with fluent API
 
   - Implement ContractBuilder class with generic type parameters
   - Add route() method for HTTP method, path, and summary configuration
@@ -23,7 +23,7 @@
   - Add output() method for status code to schema mapping
   - _Requirements: 1.1, 2.1, 3.1_
 
-- [x] 4. Implement structured input validation system
+- [] 4. Implement structured input validation system
 
   - Create validation logic for params, query, body, and headers separately
   - Implement error handling with descriptive messages for each input type
@@ -31,7 +31,7 @@
   - Create unit tests for input validation scenarios
   - _Requirements: 2.2, 2.3, 2.4_
 
-- [x] 5. Implement status code output validation and response handling
+- [] 5. Implement status code output validation and response handling
 
   - Create output validation logic that maps responses to status codes
   - Implement ContractResponse interface and response formatting

@@ -47,15 +47,15 @@ export function createProcedureClient<
 ): ProcedureClient<TInputSchema, TOutputSchema> {
   const options = resolveMaybeOptionalOptions(rest);
 
-  return (...[input, callerOptions]) => {
+  return ((...[input, callerOptions]: Parameters<ProcedureClient<TInputSchema, TOutputSchema>>) => {
     return executeProcedureInternal(procedure, {
       context: options.context ?? {},
       input,
       path: options.path ?? [],
       procedure,
-      signal: callerOptions?.signal,
+      signal: (callerOptions as any)?.signal,
     });
-  };
+  }) as ProcedureClient<TInputSchema, TOutputSchema>;
 }
 
 async function validateInput(
@@ -68,21 +68,23 @@ async function validateInput(
     return input;
   }
 
-  const result = await schema['~standard'].validate(input);
-  if (result.issues) {
-    throw new ORPCError('BAD_REQUEST', {
-      message: 'Input validation failed',
-      data: {
-        issues: result.issues,
-      },
-      cause: new ValidationError({
+  try {
+    return await schema.parseAsync(input);
+  } catch (error) {
+    if (error instanceof Error && 'issues' in error) {
+      throw new ORPCError('BAD_REQUEST', {
         message: 'Input validation failed',
-        issues: result.issues,
-      }),
-    });
+        data: {
+          issues: (error as any).issues,
+        },
+        cause: new ValidationError({
+          message: 'Input validation failed',
+          issues: (error as any).issues,
+        }),
+      });
+    }
+    throw error;
   }
-
-  return result.value;
 }
 
 async function validateOutput(
@@ -95,18 +97,20 @@ async function validateOutput(
     return output;
   }
 
-  const result = await schema['~standard'].validate(output);
-  if (result.issues) {
-    throw new ORPCError('INTERNAL_SERVER_ERROR', {
-      message: 'Output validation failed',
-      cause: new ValidationError({
+  try {
+    return await schema.parseAsync(output);
+  } catch (error) {
+    if (error instanceof Error && 'issues' in error) {
+      throw new ORPCError('INTERNAL_SERVER_ERROR', {
         message: 'Output validation failed',
-        issues: result.issues,
-      }),
-    });
+        cause: new ValidationError({
+          message: 'Output validation failed',
+          issues: (error as any).issues,
+        }),
+      });
+    }
+    throw error;
   }
-
-  return result.value;
 }
 
 function executeProcedureInternal(

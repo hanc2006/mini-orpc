@@ -27,7 +27,7 @@ export class RPCLink {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(input),
-      signal: options.signal,
+      signal: options.signal || null,
     });
 
     /**
