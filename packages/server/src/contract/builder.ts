@@ -7,6 +7,7 @@ import type {
   RouteConfig,
   StatusCodeOutputs,
   StructuredInput,
+  ValidateStatusCodeKeys,
 } from './types';
 
 /**
@@ -19,7 +20,7 @@ export interface ContractBuilderDef<
 > {
   route?: ParsedRoute;
   inputSchema?: TInput;
-  outputSchemas?: TOutput;
+  outputSchemas?: ValidateStatusCodeKeys<TOutput>;
 }
 
 /**
@@ -74,7 +75,7 @@ export class ContractBuilder<
    * Sets the status code output schemas
    */
   output<TStatusOutputs extends StatusCodeOutputs>(
-    schemas: TStatusOutputs
+    schemas: ValidateStatusCodeKeys<TStatusOutputs>
   ): ContractBuilder<TRoute, TInput, TStatusOutputs> {
     return new ContractBuilder({
       ...this['~contract'],

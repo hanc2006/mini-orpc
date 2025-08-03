@@ -1,12 +1,11 @@
-import type { Procedure } from '../procedure'
-import type { 
-  RouteConfig, 
-  StructuredInput, 
-  StatusCodeOutputs, 
+import type { Procedure } from '../procedure';
+import type {
   ContractHandler,
   ParsedRoute,
-  AnyContractHandler
-} from './types'
+  RouteConfig,
+  StatusCodeOutputs,
+  StructuredInput,
+} from './types';
 
 /**
  * Contract procedure definition
@@ -14,12 +13,12 @@ import type {
 export interface ContractProcedureDef<
   TRoute extends RouteConfig,
   TInput extends StructuredInput,
-  TOutput extends StatusCodeOutputs
+  TOutput extends StatusCodeOutputs,
 > {
-  route: ParsedRoute
-  inputSchema: TInput
-  outputSchemas: TOutput
-  handler: ContractHandler<TRoute, TInput, TOutput>
+  route: ParsedRoute;
+  inputSchema: TInput;
+  outputSchemas: Partial<TOutput>;
+  handler: ContractHandler<TRoute, TInput, TOutput>;
 }
 
 /**
@@ -28,15 +27,15 @@ export interface ContractProcedureDef<
 export class ContractProcedure<
   TRoute extends RouteConfig,
   TInput extends StructuredInput,
-  TOutput extends StatusCodeOutputs
+  TOutput extends StatusCodeOutputs,
 > {
   /**
    * Contract procedure metadata
    */
-  '~contract': ContractProcedureDef<TRoute, TInput, TOutput>
+  '~contract': ContractProcedureDef<TRoute, TInput, TOutput>;
 
   constructor(def: ContractProcedureDef<TRoute, TInput, TOutput>) {
-    this['~contract'] = def
+    this['~contract'] = def;
   }
 
   /**
@@ -45,7 +44,7 @@ export class ContractProcedure<
    */
   toProcedure(): Procedure<any, any, any, any> {
     // This will be implemented in the integration phase
-    throw new Error('toProcedure() not yet implemented')
+    throw new Error('toProcedure() not yet implemented');
   }
 
   /**
@@ -54,28 +53,30 @@ export class ContractProcedure<
    */
   toHttpHandler(): HttpHandler {
     // This will be implemented in the HTTP integration phase
-    throw new Error('toHttpHandler() not yet implemented')
+    throw new Error('toHttpHandler() not yet implemented');
   }
 }
 
 /**
  * Any contract procedure type
  */
-export type AnyContractProcedure = ContractProcedure<any, any, any>
+export type AnyContractProcedure = ContractProcedure<any, any, any>;
 
 /**
  * HTTP handler function signature
  */
 export interface HttpHandler {
-  (request: Request): Promise<Response>
+  (request: Request): Promise<Response>;
 }
 
 /**
  * Type guard to check if an item is a contract procedure
  */
-export function isContractProcedure(item: unknown): item is AnyContractProcedure {
+export function isContractProcedure(
+  item: unknown
+): item is AnyContractProcedure {
   if (item instanceof ContractProcedure) {
-    return true
+    return true;
   }
 
   return (
@@ -88,5 +89,5 @@ export function isContractProcedure(item: unknown): item is AnyContractProcedure
     'inputSchema' in item['~contract'] &&
     'outputSchemas' in item['~contract'] &&
     'handler' in item['~contract']
-  )
+  );
 }

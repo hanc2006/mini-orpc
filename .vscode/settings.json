@@ -1,7 +1,7 @@
 {
-  "emmet.showExpandedAbbreviation": "never",
   "files.exclude": {
     "**/.git": true,
+    "**/dist": true,
     "**/*.tsbuildinfo": true,
     "**/node_modules": true,
     "**/pnpm-lock.yaml": true
@@ -29,26 +29,6 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "explorer.compactFolders": false,
   "explorer.excludeGitIgnore": false,
-  "explorer.autoRevealExclude": {
-    "node_modules": true
-  },
-  "typescript.tsdk": "node_modules/typescript/lib",
-  "typescript.referencesCodeLens.enabled": true,
-  "typescript.format.enable": false,
-  "typescript.check.npmIsInstalled": true,
-  "typescript.implementationsCodeLens.enabled": false,
-  "testExplorer.useNativeTesting": true,
-  "nodejs-testing.extensions": [
-    {
-      "extensions": ["ts"],
-      "parameters": ["--import", "tsx"]
-    }
-  ],
-  "nodejs-testing.include": ["packages/**/__tests__"],
-  "nodejs-testing.style": "spec",
-  "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  "editor.codeLens": true
 }

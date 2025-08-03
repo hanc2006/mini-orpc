@@ -36,9 +36,9 @@ export type SimplifyDeepArray<T> = T extends any[]
  */
 export type DeepResolve<T> = T extends (...args: any[]) => any
   ? T
-  : T extends Array<any>
+  : T extends [any]
   ? T extends Array<infer U>
-    ? Array<DeepResolve<U>>
+    ? [DeepResolve<U>]
     : never
   : T extends Date
   ? T
