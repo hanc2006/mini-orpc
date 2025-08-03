@@ -13,6 +13,40 @@ import type {
 } from './http-types';
 
 /**
+ * Utility type to omit properties of type never
+ */
+export type ExcludeNever<T> = T extends any[] | Date
+  ? T
+  : { [K in keyof T as T[K] extends never ? never : K]: T[K] } & {};
+
+/**
+ * Utility type to simplify and prettify types for better display
+ */
+export type Simplify<T> = { [K in keyof T]: T[K] } & {};
+
+/**
+ * Utility type for deep array simplification
+ */
+export type SimplifyDeepArray<T> = T extends any[]
+  ? { [E in keyof T]: SimplifyDeepArray<T[E]> }
+  : Simplify<T>;
+
+/**
+ * A utility type that deeply resolves and prettifies nested types
+ */
+export type DeepResolve<T> = T extends (...args: any[]) => any
+  ? T
+  : T extends Array<any>
+  ? T extends Array<infer U>
+    ? Array<DeepResolve<U>>
+    : never
+  : T extends Date
+  ? T
+  : T extends object
+  ? { [K in keyof T]: DeepResolve<T[K]> }
+  : T;
+
+/**
  * HTTP route configuration for contract procedures
  */
 export interface RouteConfig<
@@ -54,12 +88,13 @@ export interface StructuredInput<
 
 /**
  * Type inference for structured input schemas
+ * Uses ExcludeNever to omit properties that are not defined instead of including them as never
  */
 export type InferStructuredInput<
   T extends StructuredInput<any, any>,
   TMethod extends HttpMethod = HttpMethod,
   TPath extends string = string,
-> = {
+> = ExcludeNever<{
   // Only include params if they exist and are allowed
   params: T['params'] extends AnySchema
     ? InferSchemaInput<T['params']>
@@ -71,7 +106,19 @@ export type InferStructuredInput<
   headers: T['headers'] extends AnySchema
     ? InferSchemaInput<T['headers']>
     : never;
-};
+}>;
+
+/**
+ * Helper type to validate that all keys in an object are valid HTTP status codes
+ * This ensures that only objects with valid status code keys are accepted
+ */
+export type ValidateStatusCodeKeys<T> = keyof T extends HttpStatusCode
+  ? T
+  : {
+      [K in keyof T]: K extends HttpStatusCode
+        ? T[K]
+        : never
+    };
 
 /**
  * Status code to schema mapping for responses
@@ -108,7 +155,7 @@ export interface ContractHandlerOptions<
   TMethod extends HttpMethod = HttpMethod,
   TPath extends string = string,
 > {
-  input: InferStructuredInput<TInput, TMethod, TPath>;
+  input: Simplify<InferStructuredInput<TInput, TMethod, TPath>>;
   context: TContext;
   path: readonly string[];
   signal?: AbortSignal;
@@ -120,7 +167,7 @@ export interface ContractHandlerOptions<
 export interface ContractHandler<
   TRoute extends RouteConfig<any, any>,
   TInput extends StructuredInput<any, any>,
-  TOutput extends StatusCodeOutputs,
+  TOutput extends StatusCodeOutputs
 > {
   (
     options: ContractHandlerOptions<
