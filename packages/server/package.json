@@ -13,6 +13,7 @@
   "dependencies": {
     "@mini-orpc/client": "workspace:*",
     "@orpc/shared": "^1.7.5",
+    "type-fest": "^4.41.0",
     "zod": "^4.0.14",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v20.52.0"
   }

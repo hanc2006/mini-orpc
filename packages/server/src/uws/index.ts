@@ -1,2 +1,5 @@
 export { createUWSHandler } from './handler';
-export { UWSServer, type UWSServerOptions } from './server';
+export {
+  UWSServer,
+  type UWSServerSettings as UWSServerOptions,
+} from './server';

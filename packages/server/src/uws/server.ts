@@ -1,11 +1,11 @@
 import uWS from 'uWebSockets.js';
+import type { RequiredDeep } from 'type-fest';
 import type { Router } from '../router';
 import type { Context } from '../types';
 import { createUWSHandler } from './handler';
 
-export interface UWSServerOptions<T extends Context> {
+export interface UWSServerSettings {
   prefix: `/${string}`;
-  context: T;
   port?: number;
   host?: string;
   cors: {
@@ -17,33 +17,41 @@ export interface UWSServerOptions<T extends Context> {
 }
 
 export class UWSServer<T extends Context> {
-  private app: uWS.TemplatedApp;
-  private opts: Required<UWSServerOptions<T>>;
+  private instance: uWS.TemplatedApp;
+  private settings: RequiredDeep<UWSServerSettings>;
   private catchFunction?: (
     error: any,
     req: uWS.HttpRequest,
     res: uWS.HttpResponse
   ) => void | Promise<void>;
 
-  constructor(options: UWSServerOptions<T>) {
-    this.app = uWS.App(options.ssl);
-    this.opts = {
-      port: options.port ?? 3001,
-      host: options.host ?? '0.0.0.0',
-      ...options,
-      ...(options.ssl ?? ({} as uWS.AppOptions)),
-      //...(options.ssl ?? undefined),
+  constructor(app: UWSServerSettings) {
+    this.instance = uWS.App(app.ssl);
+    this.settings = {
+      ...app,
+      port: app.port ?? 3001,
+      host: app.host ?? '0.0.0.0',
+      cors: {
+        origin: app.cors.origin ?? '*',
+        methods: app.cors.methods ?? 'GET, POST, PUT, DELETE, OPTIONS',
+        headers: app.cors.headers ?? 'Content-Type, Authorization',
+      },
+      ssl: {
+        ca_file_name: app.ssl?.ca_file_name ?? '',
+        cert_file_name: app.ssl?.cert_file_name ?? '',
+        dh_params_file_name: app.ssl?.dh_params_file_name ?? '',
+        key_file_name: app.ssl?.key_file_name ?? '',
+        passphrase: app.ssl?.passphrase ?? '',
+        ssl_ciphers: app.ssl?.ssl_ciphers ?? '',
+        ssl_prefer_low_memory_usage: app.ssl?.ssl_prefer_low_memory_usage ?? false,
+      },
     };
   }
 
-  private setupCORS(res: uWS.HttpResponse, options: UWSServerOptions<T>) {
-    const cors = options.cors || {
-      origin: '*',
-      methods: 'GET, POST, PUT, DELETE, OPTIONS',
-      headers: 'Content-Type, Authorization',
-    };
+  private cors(res: uWS.HttpResponse) {
+    const { cors } = this.settings;
 
-    res.writeHeader('Access-Control-Allow-Origin', cors.origin || '*');
+    res.writeHeader('Access-Control-Allow-Origin', cors.origin);
     res.writeHeader(
       'Access-Control-Allow-Methods',
       cors.methods || 'GET, POST, PUT, DELETE, OPTIONS'
@@ -54,16 +62,17 @@ export class UWSServer<T extends Context> {
     );
   }
 
-  register(router: Router<T>) {
-    const prefix = this.opts.prefix || '/rpc';
-    const handler = createUWSHandler(router, this.opts);
+  register(context: T, router: Router<T>) {
+    const prefix = this.settings.prefix || '/rpc';
 
-    this.app.any(`${prefix}/*`, async (res, req) => {
+    const handler = createUWSHandler(context, router, prefix);
+
+    this.instance.any(`${prefix}/*`, async (res, req) => {
       let aborted = false;
 
       res.onAborted(() => (aborted = true));
 
-      this.setupCORS(res, this.opts);
+      this.cors(res);
 
       if (req.getMethod() === 'options') {
         res.end();
@@ -106,16 +115,16 @@ export class UWSServer<T extends Context> {
   }
 
   listen() {
-    this.app.listen(this.opts.port, () => {
+    this.instance.listen(this.settings.port, () => {
       console.log(
-        `🚀 UWS API Server running at http://${this.opts.host}:${this.opts.port}`
+        `🚀 UWS API Server running at http://${this.settings.host}:${this.settings.port}`
       );
     });
   }
 
   async close() {
     // TODO graceful shutdown
-    this.app.close();
+    this.instance.close();
     return Promise.resolve();
   }
 }
