@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { oc } from './builder';
+import { oc } from '../../src/contract/builder';
 
 // Example schemas with proper optionality
 const PlanetSchema = z.object({

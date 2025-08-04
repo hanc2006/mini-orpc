@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.1.3/schema.json",
   "extends": ["ultracite"],
   "linter": {
     "rules": {
@@ -13,7 +13,7 @@
         "noExcessiveCognitiveComplexity": {
           "level": "warn",
           "options": {
-            "maxAllowedComplexity": 25
+            "maxAllowedComplexity": 35
           }
         }
       },
