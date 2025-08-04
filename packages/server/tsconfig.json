@@ -3,8 +3,11 @@
   "references": [{ "path": "../client" }],
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "baseUrl": "src"
   },
-  "include": ["src"]
+  "include": [
+    "src",
+    "examples"
+  ]
 }

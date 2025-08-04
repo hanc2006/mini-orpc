@@ -3,7 +3,7 @@ import { router } from './router/index';
 
 const server = new UWSServer(router);
 
-const port = process.env.PORT ? parseInt(process.env.PORT) : 3001;
+const port = process.env.PORT ? Number.parseInt(process.env.PORT, 2) : 3001;
 
 server.listen({
   context: {},
